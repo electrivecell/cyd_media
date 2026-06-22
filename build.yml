@@ -1,0 +1,26 @@
+name: Build CYD Firmware
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Install PlatformIO
+        run: pip install platformio
+
+      - name: Build firmware
+        run: pio run
+
+      - name: Upload .bin artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: firmware
+          path: .pio/build/esp32dev/firmware.bin
